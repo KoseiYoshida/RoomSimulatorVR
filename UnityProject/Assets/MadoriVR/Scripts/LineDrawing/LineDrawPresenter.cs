@@ -1,6 +1,7 @@
 ﻿using System;
 using UniRx;
 using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 
 namespace MadoriVR.Scripts.LineDrawing
@@ -27,6 +28,7 @@ namespace MadoriVR.Scripts.LineDrawing
         // FIX: indexをValueObject化する。
         private (bool isDrawing, int lineIndex) drawState = (false, int.MinValue);
 
+        [Inject]
         public LineDrawPresenter(DrawLineModel model, LineDrawView drawView)
         {
             this.model = model;
