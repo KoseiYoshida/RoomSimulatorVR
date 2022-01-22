@@ -71,6 +71,8 @@ namespace MadoriVR.Scripts.LineDrawing
             {
                 if (mouseHitPosSubject.HasObservers)
                 {
+                    // FIX: Mouseが対象にのってないときや、画面外にあるときは処理を省略する？
+                    
                     var hitPos = GetHitPos();
                     if (hitPos.HasValue)
                     {
@@ -78,7 +80,7 @@ namespace MadoriVR.Scripts.LineDrawing
                     }
                     else
                     {
-                        Debug.LogWarning("No pos data");
+                        Debug.LogWarning("Ray didn't hit anything.");
                     }
                 }
                 
