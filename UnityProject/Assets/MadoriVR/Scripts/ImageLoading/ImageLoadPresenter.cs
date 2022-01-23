@@ -24,18 +24,21 @@ namespace MadoriVR.Scripts.ImageLoading
             view.OnPathEntered
                 .Subscribe(async path =>
                 {
-                    // TODO: サニタイズ
                     var result = pathValidator.Validate(path);
+                    
                     if (!result.isValid)
                     {
-                        Debug.Log($"not valid: {result.notValidReason}");
+                        view.ShowLoadResult(result.notValidReason);
+                        Debug.LogWarning($"not valid: {result.notValidReason}");
                         return;
                     }
                     
                     model.SetPath(path);
                     
+                    view.ShowLoadResult("Loading.");
                     var texture = await model.GetTextureAsync();
                     view.ShowImage(texture);
+                    view.ShowLoadResult("Loaded.");
                 }).AddTo(compositeDisposable);
         }
     }

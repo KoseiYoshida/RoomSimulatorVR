@@ -11,6 +11,7 @@ namespace MadoriVR.Scripts.ImageLoading
         [SerializeField] private Button loadButton = default;
 
         [SerializeField] private RawImage rawImage = default;
+        [SerializeField] private Text message = default;
         
 
         private readonly Subject<string> loadPathSubject = new Subject<string>();
@@ -37,6 +38,11 @@ namespace MadoriVR.Scripts.ImageLoading
             // FIX: サイズ調整を適切にする。この調整はPresenter側が指示を出すのが適切かも。
             scaleXY *= 3;
             rawImage.transform.localScale = new Vector3(scaleXY.x, scaleXY.y, 1.0f);
+        }
+
+        public void ShowLoadResult(string text)
+        {
+            message.text = text;
         }
     }
 }
