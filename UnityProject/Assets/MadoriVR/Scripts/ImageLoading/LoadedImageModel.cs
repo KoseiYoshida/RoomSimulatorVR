@@ -11,7 +11,6 @@ namespace MadoriVR.Scripts.ImageLoading
         private string path;
         public void SetPath(string candidate)
         {
-            // FIX: validation, validatorをクラス化したらpreesenterでも使い回せるかも。
             var result = pathValidator.Validate(candidate);
             if (!result.isValid)
             {
