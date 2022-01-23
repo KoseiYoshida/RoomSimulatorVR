@@ -7,38 +7,40 @@ namespace MadoriVR.Scripts.ImageLoading
     public sealed class ImageLoadPresenter : IStartable
     {
         private readonly LoadedImageModel model;
-        private readonly ImageLoadView view;
+        private readonly IImageSelector imageSelector;
+        private readonly IImageShower imageShower;
         private readonly ImagePathValidator pathValidator;
 
         private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-        public ImageLoadPresenter(LoadedImageModel model, ImageLoadView view, ImagePathValidator pathValidator)
+        public ImageLoadPresenter(LoadedImageModel model, IImageSelector imageSelector, IImageShower imageShower, ImagePathValidator pathValidator)
         {
             this.model = model;
-            this.view = view;
+            this.imageSelector = imageSelector;
+            this.imageShower = imageShower;
             this.pathValidator = pathValidator;
         }
 
         public void Start()
         {
-            view.OnPathEntered
+            imageSelector.OnPathEntered()
                 .Subscribe(async path =>
                 {
                     var result = pathValidator.Validate(path);
                     
                     if (!result.isValid)
                     {
-                        view.ShowLoadResult(result.notValidReason);
+                        imageShower.ShowLoadResult(result.notValidReason);
                         Debug.LogWarning($"not valid: {result.notValidReason}");
                         return;
                     }
                     
                     model.SetPath(path);
                     
-                    view.ShowLoadResult("Loading.");
+                    imageShower.ShowLoadResult("Loading.");
                     var texture = await model.GetTextureAsync();
-                    view.ShowImage(texture);
-                    view.ShowLoadResult("Loaded.");
+                    imageShower.ShowImage(texture);
+                    imageShower.ShowLoadResult("Loaded.");
                 }).AddTo(compositeDisposable);
         }
     }

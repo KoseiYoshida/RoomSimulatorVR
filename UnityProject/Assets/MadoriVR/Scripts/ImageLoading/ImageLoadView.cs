@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace MadoriVR.Scripts.ImageLoading
 {
-    public sealed class ImageLoadView : MonoBehaviour
+    public sealed class ImageLoadView : MonoBehaviour, IImageSelector, IImageShower
     {
         [SerializeField] private InputField pathInputField = default;
         [SerializeField] private Button loadButton = default;
@@ -15,7 +15,7 @@ namespace MadoriVR.Scripts.ImageLoading
         
 
         private readonly Subject<string> loadPathSubject = new Subject<string>();
-        public IObservable<string> OnPathEntered => loadPathSubject;
+        public IObservable<string> OnPathEntered() => loadPathSubject;
         
         private void Start()
         {

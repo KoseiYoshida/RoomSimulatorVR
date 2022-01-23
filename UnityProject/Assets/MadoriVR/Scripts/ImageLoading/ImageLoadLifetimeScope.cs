@@ -14,7 +14,9 @@ namespace MadoriVR.Scripts.ImageLoading
 
             builder.RegisterInstance<ImagePathValidator>(new ImagePathValidator(new FileSystem()));
             builder.Register<LoadedImageModel>(Lifetime.Singleton);
-            builder.RegisterInstance<ImageLoadView>(GetComponent<ImageLoadView>());
+            builder.RegisterInstance<ImageLoadView>(GetComponent<ImageLoadView>())
+                .As<IImageSelector>()
+                .As<IImageShower>();
             builder.RegisterEntryPoint<ImageLoadPresenter>();
         }
     }
