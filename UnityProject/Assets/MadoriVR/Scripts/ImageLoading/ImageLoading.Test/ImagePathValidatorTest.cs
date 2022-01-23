@@ -8,7 +8,7 @@ namespace MadoriVR.Scripts.ImageLoading.ImageLoading.Test
     public sealed class ImagePathValidatorTest
     {
         [Test]
-        public void Validate_Success()
+        public void Validate_InputCorrectPath_Success()
         {
             var ex = ImagePathValidator.AllowedExtensions.First();
             var path = @"c:\sampleFile" + ex;
@@ -24,7 +24,7 @@ namespace MadoriVR.Scripts.ImageLoading.ImageLoading.Test
         }
 
         [Test]
-        public void Validate_Failed_FileNotExist()
+        public void Validate_InputNotExistFilePath_Failed()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>());
             var validator = new ImagePathValidator(fileSystem);
@@ -36,12 +36,12 @@ namespace MadoriVR.Scripts.ImageLoading.ImageLoading.Test
         }
         
         [Test]
-        public void Validate_Failed_FileTypeIsNotImage()
+        public void Validate_InputNotImageFilePath_Failed()
         {
             var path = @"c:\sampleFile" + ".txt";
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>()
             {
-                {path, new MockFileData(new byte[] { 0x12, 0x34, 0x56, 0xd2 })},
+                {path, new MockFileData("hoge")},
             });
             var validator = new ImagePathValidator(fileSystem);
 
