@@ -1,10 +1,11 @@
-﻿using UniRx;
+﻿using System;
+using UniRx;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace MadoriVR.Scripts.ImageLoading
 {
-    public sealed class ImageLoadPresenter : IStartable
+    public sealed class ImageLoadPresenter : IStartable, IDisposable
     {
         private readonly LoadedImageModel model;
         private readonly IImageSelector imageSelector;
@@ -42,6 +43,11 @@ namespace MadoriVR.Scripts.ImageLoading
                     imageShower.ShowImage(texture);
                     imageShower.ShowLoadResult("Loaded.");
                 }).AddTo(compositeDisposable);
+        }
+
+        public void Dispose()
+        {
+            compositeDisposable?.Dispose();
         }
     }
 }
