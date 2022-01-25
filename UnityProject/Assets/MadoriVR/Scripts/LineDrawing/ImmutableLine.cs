@@ -3,22 +3,25 @@ using UnityEngine;
 
 namespace MadoriVR.Scripts.LineDrawing
 {
+    /// <summary>
+    /// A line.
+    /// </summary>
     public sealed class ImmutableLine : IEquatable<ImmutableLine>
     {
-        public readonly Vector2 Point1;
-        public readonly Vector2 Point2;
+        public readonly Vector2 point1;
+        public readonly Vector2 point2;
 
         public ImmutableLine(Vector2 point1, Vector2 point2)
         {
-            Point1 = point1;
-            Point2 = point2;
+            this.point1 = point1;
+            this.point2 = point2;
         }
 
         public bool Equals(ImmutableLine other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Point1.Equals(other.Point1) && Point2.Equals(other.Point2);
+            return point1.Equals(other.point1) && point2.Equals(other.point2);
         }
 
         public override bool Equals(object obj)
@@ -30,7 +33,7 @@ namespace MadoriVR.Scripts.LineDrawing
         {
             unchecked
             {
-                return (Point1.GetHashCode() * 397) ^ Point2.GetHashCode();
+                return (point1.GetHashCode() * 397) ^ point2.GetHashCode();
             }
         }
 

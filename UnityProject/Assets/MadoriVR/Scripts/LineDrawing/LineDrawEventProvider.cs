@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace MadoriVR.Scripts.LineDrawing
 {
+    /// <summary>
+    /// Provide ui events necessary for drawing line. 
+    /// </summary>
     public sealed class LineDrawEventProvider : MonoBehaviour
     {
         private Camera mainCameraCache;
 
         // FIX: Vector2そのままじゃない方がいいかも。(x, y) -> (x, z)となったりがややこしいので。
-        // FIX: Raycastしてるなら、そのまま3D座標送ってやった方がわかりやすいそう。
         private readonly Subject<Vector2> clickHitPosSubject = new Subject<Vector2>();
         public IObservable<Vector2> OnClicked => clickHitPosSubject;
 

@@ -5,9 +5,12 @@ using VContainer.Unity;
 
 namespace MadoriVR.Scripts.LineDrawing
 {
+    /// <summary>
+    /// Update <see cref="DrawnLineModel"/> by observing <see cref="lineDrawEventProvider"/>.
+    /// </summary>
     public sealed class LineDrawInput : IStartable, IDisposable
     {
-        private readonly DrawLineModel model;
+        private readonly DrawnLineModel model;
         private readonly LineDrawEventProvider lineDrawEventProvider;
 
         private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -16,7 +19,7 @@ namespace MadoriVR.Scripts.LineDrawing
         private IDisposable mouseHitDisposable; 
 
         [Inject]
-        public LineDrawInput(DrawLineModel model, LineDrawEventProvider lineDrawEventProvider)
+        public LineDrawInput(DrawnLineModel model, LineDrawEventProvider lineDrawEventProvider)
         {
             this.model = model;
             this.lineDrawEventProvider = lineDrawEventProvider;
@@ -30,7 +33,7 @@ namespace MadoriVR.Scripts.LineDrawing
                     if (isDrawing)
                     {
                         var drawing = model.DrawingLine.Value;
-                        var line = new ImmutableLine(drawing.Point1, point);
+                        var line = new ImmutableLine(drawing.point1, point);
                         model.AddLine(drawing);
 
                         isDrawing = false;
@@ -54,7 +57,7 @@ namespace MadoriVR.Scripts.LineDrawing
                         var drawing = model.DrawingLine.Value;
                         
                         // FIX: 毎回インスタンスをつくりなおすのではなく、更新と通知ができるようにしておく。
-                        var line = new ImmutableLine(drawing.Point1, point);
+                        var line = new ImmutableLine(drawing.point1, point);
                         model.ChangeDrawingLine(line);
                     })
                     .AddTo(compositeDisposable);

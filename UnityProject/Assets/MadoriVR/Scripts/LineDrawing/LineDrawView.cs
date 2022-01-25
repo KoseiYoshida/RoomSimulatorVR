@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MadoriVR.Scripts.LineDrawing
 {
+    /// <summary>
+    /// Draw line for user.
+    /// </summary>
     public sealed class LineDrawView : MonoBehaviour
     {
         [SerializeField] private Transform parent = default;
@@ -10,6 +13,11 @@ namespace MadoriVR.Scripts.LineDrawing
         private readonly Dictionary<int, LineRenderer> lines = new Dictionary<int, LineRenderer>(64);
         private int lineIndexCount;
 
+        /// <summary>
+        /// Draw line.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns>An unique index of a line</returns>
         public int DrawLine((Vector3, Vector3) points)
         {
             var go = new GameObject("Line");
@@ -24,6 +32,11 @@ namespace MadoriVR.Scripts.LineDrawing
             return index;
         }
 
+        /// <summary>
+        /// Move line position.
+        /// </summary>
+        /// <param name="lineIndex"></param>
+        /// <param name="points"></param>
         public void MoveLine(int lineIndex, (Vector3, Vector3) points)
         {
             var line = lines[lineIndex];
@@ -31,6 +44,11 @@ namespace MadoriVR.Scripts.LineDrawing
             line.SetPosition(1, points.Item2);
         }
 
+        
+        /// <summary>
+        /// Delete line.
+        /// </summary>
+        /// <param name="lineIndex"></param>
         public void DeleteLine(int lineIndex)
         {
             var line = lines[lineIndex];

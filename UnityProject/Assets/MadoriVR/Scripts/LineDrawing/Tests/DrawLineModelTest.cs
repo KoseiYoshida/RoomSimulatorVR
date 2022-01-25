@@ -10,7 +10,7 @@ namespace MadoriVR.Scripts.LineDrawing.Tests
         [Test]
         public void CanReceiveAddedLine()
         {
-            var model = new DrawLineModel();
+            var model = new DrawnLineModel();
             ImmutableLine line = new ImmutableLine(Vector2.one, Vector2.one * 2);
             ImmutableLine added = null;
             model.Lines.ObserveAdd()
@@ -24,7 +24,7 @@ namespace MadoriVR.Scripts.LineDrawing.Tests
         [Test]
         public void CanReceiveDrawingLine()
         {
-            var model = new DrawLineModel();
+            var model = new DrawnLineModel();
             ImmutableLine line = new ImmutableLine(Vector2.one, Vector2.one * 2);
             ImmutableLine drawing = null;
             model.DrawingLine

@@ -4,6 +4,9 @@ using VContainer.Unity;
 
 namespace MadoriVR.Scripts.LineDrawing
 {
+    /// <summary>
+    /// Compose line draw classes dependency.
+    /// </summary>
     [RequireComponent(typeof(LineDrawEventProvider))]
     public sealed class LineDrawerLifetimeScope : LifetimeScope
     {
@@ -11,12 +14,11 @@ namespace MadoriVR.Scripts.LineDrawing
         {
             base.Configure(builder);
 
-            builder.Register<DrawLineModel>(Lifetime.Singleton);
+            builder.Register<DrawnLineModel>(Lifetime.Singleton);
             builder.RegisterInstance(GetComponent<LineDrawEventProvider>());
             builder.RegisterEntryPoint<LineDrawInput>();
             builder.RegisterInstance(GetComponent<LineDrawView>());
             builder.RegisterEntryPoint<LineDrawPresenter>();
-
         }
     }
 }

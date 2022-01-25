@@ -6,21 +6,24 @@ using VContainer.Unity;
 
 namespace MadoriVR.Scripts.LineDrawing
 {
+    /// <summary>
+    /// Control <see cref="LineDrawView"/> based on <see cref="DrawnLineModel"/>.
+    /// </summary>
     public sealed class LineDrawPresenter : IStartable, IDisposable
     {
         // FIX: 今は簡単のために高さを決め打ちにしてる。状況に合わせて設定できる方が自然。
         private (Vector3, Vector3) To3DPos(ImmutableLine immutableLine)
         {
-            const float Height = 1.0f;
+            const float HEIGHT = 1.0f;
             
             return 
             (
-                new Vector3(immutableLine.Point1.x, Height, immutableLine.Point1.y),
-                new Vector3(immutableLine.Point2.x, Height, immutableLine.Point2.y) 
+                new Vector3(immutableLine.point1.x, HEIGHT, immutableLine.point1.y),
+                new Vector3(immutableLine.point2.x, HEIGHT, immutableLine.point2.y) 
             );
         }
 
-        private readonly DrawLineModel model;
+        private readonly DrawnLineModel model;
         private readonly LineDrawView drawView;
 
         private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -29,7 +32,7 @@ namespace MadoriVR.Scripts.LineDrawing
         private (bool isDrawing, int lineIndex) drawState = (false, int.MinValue);
 
         [Inject]
-        public LineDrawPresenter(DrawLineModel model, LineDrawView drawView)
+        public LineDrawPresenter(DrawnLineModel model, LineDrawView drawView)
         {
             this.model = model;
             this.drawView = drawView;
