@@ -28,6 +28,7 @@ namespace MadoriVR
         {
             base.Awake();
 
+            // TODO: 親子関係の作り方。ImageLoaderのPrefab化 + EnqueueParentをつかって、ImageLoader側のIContainerBuilderにIImageShowerを登録してやるのが綺麗なやり方かも。検討する。
             imageLoadLifetimeScope.parentReference.Object = this;
         }
 
@@ -35,7 +36,7 @@ namespace MadoriVR
         {
             base.Configure(builder);
 
-            builder.RegisterInstance<ImageShower>(GetComponent<ImageShower>()).As<IImageShower>();
+            builder.RegisterInstance(GetComponent<ImageShower>()).As<IImageShower>();
             builder.RegisterEntryPoint<SequenceController>();
         }
     }
