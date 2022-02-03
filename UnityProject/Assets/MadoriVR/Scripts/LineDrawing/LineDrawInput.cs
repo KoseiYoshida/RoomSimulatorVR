@@ -12,42 +12,65 @@ namespace MadoriVR.Scripts.LineDrawing
     {
         private readonly DrawnLineModel model;
         private readonly LineDrawEventProvider lineDrawEventProvider;
+        private readonly ILineDrawClient drawClient;
 
         private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
+        private CompositeDisposable drawingDisposable;
 
-        private bool isDrawing;
+        private bool isDrawingALine;
         private IDisposable mouseHitDisposable; 
 
         [Inject]
-        public LineDrawInput(DrawnLineModel model, LineDrawEventProvider lineDrawEventProvider)
+        public LineDrawInput(DrawnLineModel model, LineDrawEventProvider lineDrawEventProvider, ILineDrawClient drawClient)
         {
             this.model = model;
             this.lineDrawEventProvider = lineDrawEventProvider;
+            this.drawClient = drawClient;
         }
         
         public void Start()
         {
+            // FIX: クラスが複雑になりすぎ。分離する。
+            drawClient.CanDraw()
+                .Subscribe(value =>
+                {
+                    if (value)
+                    {
+                        EnableDrawing();
+                    }
+                    else
+                    {
+                        DisableDrawing();
+                    }
+                    
+                }).AddTo(compositeDisposable);
+        }
+
+        private void EnableDrawing()
+        {
+            drawingDisposable = new CompositeDisposable();
+            
             lineDrawEventProvider.OnClicked
                 .Subscribe(point =>
                 {
-                    if (isDrawing)
+                    if (isDrawingALine)
                     {
                         var drawing = model.DrawingLine.Value;
                         var line = new ImmutableLine(drawing.point1, point);
                         model.AddLine(drawing);
 
-                        isDrawing = false;
+                        isDrawingALine = false;
                         StopObservingMouseHit();
                     }
                     else
                     {
                         model.ChangeDrawingLine(new ImmutableLine(point, point));
 
-                        isDrawing = true;
+                        isDrawingALine = true;
                         StartObservingMouseHit();
                     }
                 })
-                .AddTo(compositeDisposable);
+                .AddTo(drawingDisposable);
 
             void StartObservingMouseHit()
             {
@@ -60,13 +83,18 @@ namespace MadoriVR.Scripts.LineDrawing
                         var line = new ImmutableLine(drawing.point1, point);
                         model.ChangeDrawingLine(line);
                     })
-                    .AddTo(compositeDisposable);
+                    .AddTo(drawingDisposable);
             }
 
             void StopObservingMouseHit()
             {
                 mouseHitDisposable.Dispose();
             }
+        }
+
+        private void DisableDrawing()
+        {
+            drawingDisposable?.Dispose();
         }
 
         public void Dispose()

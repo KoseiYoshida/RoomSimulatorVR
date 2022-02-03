@@ -1018,8 +1018,9 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  lineDrawLifetimeScope: {fileID: 0}
+  lineDrawLifetimeScope: {fileID: 1711890008}
   imageLoadLifetimeScope: {fileID: 741655454}
+  button: {fileID: 1503684276}
 --- !u!4 &741655452
 Transform:
   m_ObjectHideFlags: 0
@@ -2065,7 +2066,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711890007}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f6534e7ee52431b937277a7a2cd7e79, type: 3}
   m_Name: 

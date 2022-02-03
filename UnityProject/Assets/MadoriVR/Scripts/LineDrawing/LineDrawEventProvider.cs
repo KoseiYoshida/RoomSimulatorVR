@@ -27,9 +27,14 @@ namespace MadoriVR.Scripts.LineDrawing
         
         private void Start()
         {
+            clickHitPosSubject.AddTo(this);
+            mouseHitPosSubject.AddTo(this);
+            
+            
             mainCameraCache = Camera.main;
 
             Observable.EveryUpdate()
+                .Where(_ => clickHitPosSubject.HasObservers)
                 .Where(_ => Input.GetMouseButtonUp(0))
                 .Select(_ => GetHitPos())
                 .Subscribe(value =>

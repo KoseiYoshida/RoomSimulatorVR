@@ -17,8 +17,9 @@ namespace MadoriVR.Scripts.LineDrawing
         /// <summary>
         /// Being Drawn line.
         /// </summary>
-        public IReadOnlyReactiveProperty<ImmutableLine> DrawingLine => drawingLine; 
+        public IReadOnlyReactiveProperty<ImmutableLine> DrawingLine => drawingLine;
 
+        
         /// <summary>
         /// Add drawn line.
         /// </summary>

@@ -19,6 +19,7 @@ namespace MadoriVR.Scripts.LineDrawing
             builder.RegisterEntryPoint<LineDrawInput>();
             builder.RegisterInstance(GetComponent<LineDrawView>());
             builder.RegisterEntryPoint<LineDrawPresenter>();
+            builder.RegisterEntryPoint<LineSupplier>();
         }
     }
 }
