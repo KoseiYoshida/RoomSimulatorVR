@@ -10,8 +10,8 @@ namespace MadoriVR.Scripts.Debug
         [SerializeField] private RawImage rawImage = default;
         [SerializeField] private Text message = default;
 
-        private UniTaskCompletionSource imageLoadedUts = new UniTaskCompletionSource();
-        public UniTask OnImageLoaded => imageLoadedUts.Task;
+        private readonly UniTaskCompletionSource imageLoadedUtcs = new UniTaskCompletionSource();
+        public UniTask LoadImage() => imageLoadedUtcs.Task;
 
         private void Start()
         {
@@ -28,7 +28,7 @@ namespace MadoriVR.Scripts.Debug
             rawImage.transform.localScale = new Vector3(scaleXY.x, scaleXY.y, 1.0f);
             
             rawImage.gameObject.SetActive(true);
-            imageLoadedUts.TrySetResult();
+            imageLoadedUtcs.TrySetResult();
         }
 
         public void ShowLoadResult(string text)
