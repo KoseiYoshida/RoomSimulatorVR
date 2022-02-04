@@ -2,6 +2,8 @@
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
+	"dev.n5y.asmdefhelper": "https://github.com/naninunenoy/AsmdefHelper.git?path=Assets",
+	"jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer",
     "com.unity.collab-proxy": "1.15.7",
     "com.unity.ide.rider": "3.0.12",
     "com.unity.ide.vscode": "1.2.4",
@@ -10,7 +12,6 @@
     "com.unity.timeline": "1.6.3",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.7.6",
-    "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

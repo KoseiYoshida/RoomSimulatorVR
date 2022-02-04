@@ -121,6 +121,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "dev.n5y.asmdefhelper": {
+      "version": "https://github.com/naninunenoy/AsmdefHelper.git?path=Assets",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "fb2b3228c0482065cb78c86e69e560789f0ec31d"
+    },
     "jp.hadashikick.vcontainer": {
       "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer",
       "depth": 0,
