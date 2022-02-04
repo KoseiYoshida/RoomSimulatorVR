@@ -1020,7 +1020,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   lineDrawLifetimeScope: {fileID: 1711890008}
   imageLoadLifetimeScope: {fileID: 741655454}
-  button: {fileID: 1503684276}
+  generateHouseModelButton: {fileID: 1503684276}
 --- !u!4 &741655452
 Transform:
   m_ObjectHideFlags: 0
@@ -1923,7 +1923,6 @@ GameObject:
   - component: {fileID: 1711890008}
   - component: {fileID: 1711890013}
   - component: {fileID: 1711890014}
-  - component: {fileID: 1711890015}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2059,20 +2058,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
---- !u!114 &1711890015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711890007}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f6534e7ee52431b937277a7a2cd7e79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineDrawLifetimeScope: {fileID: 1711890008}
-  generateButton: {fileID: 1503684276}
 --- !u!1 &1721752045
 GameObject:
   m_ObjectHideFlags: 0
