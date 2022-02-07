@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
+using MadoriVR.Scripts.CreateHouseModel.Common;
 using VContainer;
 using VContainer.Unity;
 
@@ -25,16 +25,16 @@ namespace MadoriVR.Scripts.CreateHouseModel.Core
             // TODO: 表示方法もこちらから指定するのが自然。UIの非表示もこっちで指示できるし。
             await imageShower.LoadImage();
             
-            Debug.Log($"Image loaded.");
+            Log.Info($"Image loaded.");
 
             var lines = await lineDrawController.DrawLines();
             
-            Debug.Log($"Lines: {lines.Count()}");
+            Log.Info($"Lines: {lines.Count()}");
 
             var generator = new HouseModelGenerator();
             var houseModel = generator.Generate(lines);
 
-            Debug.Log($"House model was generated.");
+            Log.Info($"House model was generated.");
             
             // 次のシーン読みこみ？ + houseModelの引き渡し？
         }

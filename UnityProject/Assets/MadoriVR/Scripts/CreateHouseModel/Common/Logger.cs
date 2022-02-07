@@ -4,6 +4,12 @@
     public static class Log
     {
         private const string Prefix = "[RoomCreation] ";
+
+        public static void Debug(string msg)
+        {
+            // FIX: Editor/DevelopmentBuild時のみの出力などにしたい。
+            UnityEngine.Debug.Log($"{Prefix} + msg");
+        }
         
         public static void Info(string msg)
         {

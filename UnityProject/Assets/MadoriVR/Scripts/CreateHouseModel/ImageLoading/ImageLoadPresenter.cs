@@ -1,4 +1,5 @@
 ﻿using System;
+using MadoriVR.Scripts.CreateHouseModel.Common;
 using UniRx;
 using UnityEngine;
 using VContainer.Unity;
@@ -32,7 +33,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.ImageLoading
                     if (!result.isValid)
                     {
                         imageShower.ShowLoadResult(result.notValidReason);
-                        Debug.LogWarning($"not valid: {result.notValidReason}");
+                        Log.Warning($"not valid: {result.notValidReason}");
                         return;
                     }
                     

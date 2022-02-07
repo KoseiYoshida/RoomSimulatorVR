@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using MadoriVR.Scripts.CreateHouseModel.Common;
 using UniRx;
 using UnityEngine;
 
@@ -87,7 +88,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
                     }
                     else
                     {
-                        Debug.LogWarning("Ray didn't hit anything.");
+                        Log.Warning("Ray didn't hit anything.");
                     }
                 }
                 
