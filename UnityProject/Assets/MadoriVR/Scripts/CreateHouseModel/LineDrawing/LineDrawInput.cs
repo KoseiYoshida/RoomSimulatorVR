@@ -14,8 +14,10 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
         private readonly LineDrawEventProvider lineDrawEventProvider;
         private readonly ILineDrawClient drawClient;
 
-        private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable compositeDisposable = new();
         private CompositeDisposable drawingDisposable;
+
+        private readonly DrawingLineHolder drawingLineHolder = new ();
 
         private bool isDrawingALine;
         private IDisposable mouseHitDisposable; 
@@ -30,7 +32,6 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
         
         public void Start()
         {
-            // FIX: クラスが複雑になりすぎ。分離する。
             drawClient.CanDraw()
                 .Subscribe(value =>
                 {
@@ -42,8 +43,31 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
                     {
                         DisableDrawing();
                     }
-                    
+
                 }).AddTo(compositeDisposable);
+
+            drawingLineHolder.IsDrawing
+                .Subscribe(value =>
+                {
+                    if (value)
+                    {
+                        StartObservingMouseHit();
+                    }
+                    else
+                    {
+                        StopObservingMouseHit();
+                    }
+                }).AddTo(compositeDisposable);
+
+            drawingLineHolder.IncompleteLine
+                .SkipLatestValueOnSubscribe()
+                .Subscribe(model.ChangeDrawingLine)
+                .AddTo(compositeDisposable);
+
+            drawingLineHolder.CompleteLine
+                .SkipLatestValueOnSubscribe()
+                .Subscribe(model.AddLine)
+                .AddTo(compositeDisposable);
         }
 
         private void EnableDrawing()
@@ -53,55 +77,34 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
             lineDrawEventProvider.OnClicked
                 .Subscribe(point =>
                 {
-                    if (isDrawingALine)
-                    {
-                        var drawing = model.DrawingLine.Value;
-                        var line = new ImmutableLine(drawing.point1, point);
-                        model.AddLine(drawing);
-
-                        isDrawingALine = false;
-                        StopObservingMouseHit();
-                    }
-                    else
-                    {
-                        model.ChangeDrawingLine(new ImmutableLine(point, point));
-
-                        isDrawingALine = true;
-                        StartObservingMouseHit();
-                    }
+                    drawingLineHolder.AddPoint(point);
                 })
                 .AddTo(drawingDisposable);
-
-            void StartObservingMouseHit()
-            {
-                mouseHitDisposable = lineDrawEventProvider.OnMouseHit
-                    .Subscribe(point =>
-                    {
-                        var drawing = model.DrawingLine.Value;
-
-                        if (drawing.point2 != point)
-                        {
-                            var line = new ImmutableLine(drawing.point1, point);
-                            model.ChangeDrawingLine(line);
-                        }
-                    })
-                    .AddTo(drawingDisposable);
-            }
-
-            void StopObservingMouseHit()
-            {
-                mouseHitDisposable.Dispose();
-            }
         }
-
+        
         private void DisableDrawing()
         {
             drawingDisposable?.Dispose();
         }
+        
+        private void StartObservingMouseHit()
+        {
+            // OnMouseHitは処理負荷軽減のため購読の解除を行う必要あり。そのためWhereオペレータなどで処理を切り替えるのではなく、購読/解除で処理を切り替える。
+            mouseHitDisposable = lineDrawEventProvider.OnMouseHit
+                .Subscribe(drawingLineHolder.ChangeDrawingLinePoint2)
+                .AddTo(drawingDisposable);
+        }
 
+        private void StopObservingMouseHit()
+        {
+            mouseHitDisposable?.Dispose();
+        }
+        
         public void Dispose()
         {
             compositeDisposable?.Dispose();
+            drawingDisposable?.Dispose();
+            drawingLineHolder?.Dispose();
         }
     }
 }
