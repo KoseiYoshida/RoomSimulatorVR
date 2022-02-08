@@ -78,10 +78,12 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
                     .Subscribe(point =>
                     {
                         var drawing = model.DrawingLine.Value;
-                        
-                        // FIX: 毎回インスタンスをつくりなおすのではなく、更新と通知ができるようにしておく。
-                        var line = new ImmutableLine(drawing.point1, point);
-                        model.ChangeDrawingLine(line);
+
+                        if (drawing.point2 != point)
+                        {
+                            var line = new ImmutableLine(drawing.point1, point);
+                            model.ChangeDrawingLine(line);
+                        }
                     })
                     .AddTo(drawingDisposable);
             }

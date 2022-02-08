@@ -26,7 +26,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
         private readonly DrawnLineModel model;
         private readonly LineDrawView drawView;
 
-        private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable compositeDisposable = new();
 
         // FIX: indexをValueObject化する。
         private (bool isDrawing, int lineIndex) drawState = (false, int.MinValue);
