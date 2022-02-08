@@ -9,7 +9,7 @@ using VContainer.Unity;
 
 namespace MadoriVR.Scripts.CreateHouseModel.Core
 {
-    public sealed class TestMono : LifetimeScope
+    public sealed class CreateHouseModelLifetimeScope : LifetimeScope
     {
         [SerializeField] private LifetimeScope lineDrawLifetimeScope = default;
         private DrawnLineModel _drawnLineModel;
