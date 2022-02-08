@@ -7,13 +7,13 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
     /// </summary>
     public sealed class DrawnLineModel
     {
-        private readonly ReactiveCollection<ImmutableLine> lines = new ReactiveCollection<ImmutableLine>();
+        private readonly ReactiveCollection<ImmutableLine> lines = new();
         /// <summary>
         /// Drawn lines.
         /// </summary>
         public IReactiveCollection<ImmutableLine> Lines => lines;
 
-        private readonly ReactiveProperty<ImmutableLine> drawingLine = new ReactiveProperty<ImmutableLine>();
+        private readonly ReactiveProperty<ImmutableLine> drawingLine = new();
         /// <summary>
         /// Being Drawn line.
         /// </summary>
