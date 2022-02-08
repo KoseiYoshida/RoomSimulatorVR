@@ -14,10 +14,10 @@ namespace MadoriVR.Scripts.CreateHouseModel.LineDrawing
         private Camera mainCameraCache;
 
         // FIX: Vector2そのままじゃない方がいいかも。(x, y) -> (x, z)となったりがややこしいので。
-        private readonly Subject<Vector2> clickHitPosSubject = new Subject<Vector2>();
+        private readonly Subject<Vector2> clickHitPosSubject = new();
         public IObservable<Vector2> OnClicked => clickHitPosSubject;
 
-        private readonly Subject<Vector2> mouseHitPosSubject = new Subject<Vector2>();
+        private readonly Subject<Vector2> mouseHitPosSubject = new();
         /// <summary>
         /// Publish positions which be hit by raycasts from mouse pointing points.
         /// </summary>
