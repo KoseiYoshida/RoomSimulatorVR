@@ -10,7 +10,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.Core
         [SerializeField] private RawImage rawImage = default;
         [SerializeField] private Text message = default;
 
-        private readonly UniTaskCompletionSource imageLoadedUtcs = new UniTaskCompletionSource();
+        private readonly UniTaskCompletionSource imageLoadedUtcs = new();
         public UniTask LoadImage() => imageLoadedUtcs.Task;
 
         private void Start()

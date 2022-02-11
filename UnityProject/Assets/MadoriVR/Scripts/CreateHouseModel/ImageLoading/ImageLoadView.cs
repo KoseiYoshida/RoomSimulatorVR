@@ -10,7 +10,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.ImageLoading
         [SerializeField] private InputField pathInputField = default;
         [SerializeField] private Button loadButton = default;
         
-        private readonly Subject<string> loadPathSubject = new Subject<string>();
+        private readonly Subject<string> loadPathSubject = new();
         public IObservable<string> OnPathEntered() => loadPathSubject;
         
         private void Start()

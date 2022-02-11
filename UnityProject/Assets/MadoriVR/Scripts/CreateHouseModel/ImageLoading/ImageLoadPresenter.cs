@@ -13,7 +13,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.ImageLoading
         private readonly IImageShower imageShower;
         private readonly ImagePathValidator pathValidator;
 
-        private readonly CompositeDisposable compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable compositeDisposable = new();
 
         public ImageLoadPresenter(LoadedImageModel model, IImageSelector imageSelector, IImageShower imageShower, ImagePathValidator pathValidator)
         {

@@ -24,7 +24,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.ImageLoading
             // ファイルが存在するかどうか
             if (!fileSystem.File.Exists(path))
             {
-                return (false, "File doens't exist");
+                return (false, "File doesn't exist");
             }
             
             // 画像ファイルかどうか
