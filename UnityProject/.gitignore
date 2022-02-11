@@ -2,6 +2,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /Library/
+/UserSettings/
 Temp
 svn
 .vs
