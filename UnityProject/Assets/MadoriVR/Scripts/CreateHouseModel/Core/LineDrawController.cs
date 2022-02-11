@@ -8,7 +8,7 @@ namespace MadoriVR.Scripts.CreateHouseModel.Core
 {
     public sealed class LineDrawController : ILineDrawClient, IDisposable
     {
-        private readonly UniTaskCompletionSource<IEnumerable<ImmutableLine>> onLineDrawFinishedUtcs = new UniTaskCompletionSource<IEnumerable<ImmutableLine>>();
+        private readonly UniTaskCompletionSource<IEnumerable<ImmutableLine>> onLineDrawFinishedUtcs = new();
         
         public async UniTask<IEnumerable<ImmutableLine>> DrawLines()
         {
