@@ -5,16 +5,6 @@ using UnityEngine.UI;
 
 namespace MadoriVR.Scripts.FurnitureLayout
 {
-    public enum MoveCommand
-    {
-        XPlus,
-        XMinus,
-        YPlus,
-        YMinus,
-        ZPlus,
-        ZMinus,
-    }
-    
     public sealed class MoveMenu : MonoBehaviour
     {
         [SerializeField] private Button[] buttons = new Button[6];
@@ -23,8 +13,8 @@ namespace MadoriVR.Scripts.FurnitureLayout
         public IObservable<MoveCommand> OnCommand => commandSubject;
 
         [SerializeField] private Slider rotationSlider = default;
-        private readonly Subject<float> angleSubject = new();
-        public IObservable<float> OnAngle => angleSubject;
+        private readonly ReactiveProperty<float> angleSubject = new();
+        public IReadOnlyReactiveProperty<float> OnAngle => angleSubject;
 
         private void Start()
         {
@@ -39,18 +29,18 @@ namespace MadoriVR.Scripts.FurnitureLayout
 
             angleSubject.AddTo(this);
             rotationSlider.OnValueChangedAsObservable()
-                .Subscribe(value => angleSubject.OnNext(value))
+                .Subscribe(value => angleSubject.Value = value)
                 .AddTo(this);
         }
 
-        public void ChangeValidity(bool isValid)
+        public void ChangeInteractable(bool interactable)
         {
             foreach (var button in buttons)
             {
-                button.interactable = isValid;
+                button.interactable = interactable;
             }
 
-            rotationSlider.interactable = isValid;
+            rotationSlider.interactable = interactable;
         }
 
         public void SetRotationValue(float angle)

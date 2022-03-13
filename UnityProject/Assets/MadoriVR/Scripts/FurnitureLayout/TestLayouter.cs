@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using MadoriVR.Scripts.FurnitureLayout;
 using UniRx;
 using UnityEngine;
@@ -8,6 +5,9 @@ using UnityEngine.UI;
 
 public sealed class TestLayouter : MonoBehaviour
 {
+    [SerializeField] private GameObject parentPrefab = default;
+    
+    
     [SerializeField] private Button chairButton = default;
     [SerializeField] private Button tableButton = default;
     [SerializeField] private Button couchButton = default;
@@ -33,8 +33,8 @@ public sealed class TestLayouter : MonoBehaviour
 
     private void GenerateModel(GameObject prefab)
     {
-        var go = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-        go.AddComponent<BoxCollider>();
-        go.AddComponent<Mover>();
+        var parent = Instantiate(parentPrefab);
+        // TODO: 疎結合にする
+        parent.GetComponent<Furniture>().Initialize(prefab);
     }
 }
