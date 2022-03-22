@@ -5,6 +5,8 @@ namespace MadoriVR.Scripts.FurnitureLayout
 {
     public sealed class Mover : MonoBehaviour, IMovable
     {
+        [SerializeField] private Transform rotationPivot = default;
+        
         public void ChangePosition(MoveCommand command)
         {
             Vector3 diff = command switch
@@ -21,15 +23,28 @@ namespace MadoriVR.Scripts.FurnitureLayout
             transform.localPosition += diff;
         }
 
-        public void ChangeRotation(float angle)
+        public void ChangeRotation(RotationAxis axis, float angle)
         {
-            var current = transform.localEulerAngles;
-            transform.localEulerAngles = new Vector3(current.x, angle, current.z);
+            var currentCopy = rotationPivot.localRotation.eulerAngles;
+            switch(axis)
+            {
+                case RotationAxis.X: 
+                    currentCopy.x = angle;
+                    break;
+                case RotationAxis.Y:
+                    currentCopy.y = angle;
+                    break;
+                case RotationAxis.Z: 
+                    currentCopy.z = angle;
+                    break;
+            }
+            
+            rotationPivot.localRotation = Quaternion.Euler(currentCopy);
         }
 
-        public float GetRotation()
+        public Vector3 GetRotation()
         {
-            return transform.localEulerAngles.y;
+            return transform.localEulerAngles;
         }
     }
 }

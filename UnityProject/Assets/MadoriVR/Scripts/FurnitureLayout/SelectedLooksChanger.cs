@@ -18,7 +18,8 @@ namespace MadoriVR.Scripts.FurnitureLayout
             furniture.FurnitureBounds
                 .Subscribe(value =>
                 {
-                    selectedEffectBox.transform.localPosition = value.center;
+                    // Adjusterのこどもなので位置は自動調整される。
+                    // selectedEffectBox.transform.localPosition = value.center;
                     selectedEffectBox.transform.localScale = value.size;
                 }).AddTo(this);
                 

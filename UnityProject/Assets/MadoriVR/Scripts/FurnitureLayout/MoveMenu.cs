@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 namespace MadoriVR.Scripts.FurnitureLayout
 {
+    public enum RotationAxis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2,
+    }
+    
     public sealed class MoveMenu : MonoBehaviour
     {
         [SerializeField] private Button[] buttons = new Button[6];
@@ -12,9 +19,10 @@ namespace MadoriVR.Scripts.FurnitureLayout
         private readonly Subject<MoveCommand> commandSubject = new();
         public IObservable<MoveCommand> OnCommand => commandSubject;
 
-        [SerializeField] private Slider rotationSlider = default;
-        private readonly ReactiveProperty<float> angleSubject = new();
-        public IReadOnlyReactiveProperty<float> OnAngle => angleSubject;
+        [Header("x, y, zの順番")]
+        [SerializeField] private Slider[] rotationSliders = new Slider[3];
+        private readonly ReactiveProperty<(RotationAxis, float)> angleSubject = new();
+        public IReadOnlyReactiveProperty<(RotationAxis axis, float angle)> OnAngleChanged => angleSubject;
 
         private void Start()
         {
@@ -28,9 +36,14 @@ namespace MadoriVR.Scripts.FurnitureLayout
             }
 
             angleSubject.AddTo(this);
-            rotationSlider.OnValueChangedAsObservable()
-                .Subscribe(value => angleSubject.Value = value)
-                .AddTo(this);
+
+            for (int i = 0; i < rotationSliders.Length; i++)
+            {
+                var axis = (RotationAxis) i;
+                rotationSliders[i].OnValueChangedAsObservable()
+                    .Subscribe(value => angleSubject.Value = (axis, value))
+                    .AddTo(this);
+            }
         }
 
         public void ChangeInteractable(bool interactable)
@@ -40,12 +53,17 @@ namespace MadoriVR.Scripts.FurnitureLayout
                 button.interactable = interactable;
             }
 
-            rotationSlider.interactable = interactable;
+            foreach (var slider in rotationSliders)
+            {
+                slider.interactable = interactable;
+            }
         }
 
-        public void SetRotationValue(float angle)
+        public void SetRotationValue(Vector3 angle)
         {
-            rotationSlider.SetValueWithoutNotify(angle);
+            rotationSliders[0].SetValueWithoutNotify(angle.x);
+            rotationSliders[1].SetValueWithoutNotify(angle.x);
+            rotationSliders[2].SetValueWithoutNotify(angle.x);
         }
     }
 }

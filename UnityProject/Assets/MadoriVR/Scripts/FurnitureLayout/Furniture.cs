@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 namespace MadoriVR.Scripts.FurnitureLayout
 {
     public sealed class Furniture : MonoBehaviour
     {
-        [SerializeField] private GameObject raycastTargetCube;
+        [SerializeField] private GameObject raycastTargetCube = default;
+        [SerializeField] private GameObject adjuster = default;
+        
         private readonly ReactiveProperty<Bounds> furnitureBounds = new(new Bounds(Vector3.one, Vector3.one));
         public IReadOnlyReactiveProperty<Bounds> FurnitureBounds => furnitureBounds;
 
@@ -18,7 +18,8 @@ namespace MadoriVR.Scripts.FurnitureLayout
             furnitureBounds.SkipLatestValueOnSubscribe()
                 .Subscribe(value =>
                 {
-                    raycastTargetCube.transform.localPosition = value.center;
+                    // Adjusterのこどもなので位置は自動調整される。
+                    // raycastTargetCube.transform.localPosition = value.center;
                     raycastTargetCube.transform.localScale = value.size;
                 }).AddTo(this);
         }
@@ -26,11 +27,20 @@ namespace MadoriVR.Scripts.FurnitureLayout
         public void Initialize(GameObject prefab)
         {
             name = $"Parent-{prefab.name}";
-            var furnitureModel = Instantiate(prefab, Vector3.zero, Quaternion.identity, transform);
-            RecalculateBounds(furnitureModel);
+            
+            var parentTransform = adjuster.transform;
+            var furnitureModel = Instantiate(prefab, Vector3.zero, Quaternion.identity, parentTransform);
+            parentTransform.localPosition = prefab.transform.localPosition;
+            parentTransform.localRotation = prefab.transform.localRotation;
+
+            var bounds = RecalculateBounds(furnitureModel);
+            furnitureBounds.Value = bounds;
+            
+            // 空間とObjectの回転関係合わせるために180°まわす。
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
         
-        private void RecalculateBounds(GameObject furnitureModel)
+        private Bounds RecalculateBounds(GameObject furnitureModel)
         {
             var bounds = new Bounds();
             var renderers = furnitureModel.GetComponentsInChildren<Renderer>(true);
@@ -39,7 +49,7 @@ namespace MadoriVR.Scripts.FurnitureLayout
                 bounds.Encapsulate(r.bounds);
             }
 
-            furnitureBounds.Value = bounds;
+            return bounds;
         }
     }
 }

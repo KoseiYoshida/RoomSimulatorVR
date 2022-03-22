@@ -32,9 +32,9 @@ namespace MadoriVR.Scripts.FurnitureLayout
             menu.ChangeInteractable(false);
             menu.OnCommand
                 .Subscribe(value => targetMovable.ChangePosition(value)).AddTo(this);
-            menu.OnAngle
+            menu.OnAngleChanged
                 .SkipLatestValueOnSubscribe()
-                .Subscribe(value => targetMovable.ChangeRotation(value)).AddTo(this);
+                .Subscribe(value => targetMovable.ChangeRotation(value.axis, value.angle)).AddTo(this);
         }
     }
 }
