@@ -1,6 +1,7 @@
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 namespace MadoriVR.Scripts.FurnitureLayout
 {
@@ -8,13 +9,16 @@ namespace MadoriVR.Scripts.FurnitureLayout
     {
         private CameraMoveEventProvider eventProvider;
         private Camera mainCamera;
+        private Transform mainCameraTransform;
 
-        private float initialFieldOfView;
         [SerializeField] private float minFieldOfView = 20;
         [SerializeField] private float maxFieldOfView = 100;
         [SerializeField] private float zoomChangeIntensity = 1.0f;
 
         [SerializeField] private float parallelMoveIntensity = 0.1f;
+
+        [SerializeField] private float rotationIntensity = 1.0f;
+        private Quaternion originRotation;
         
         
         private void Awake()
@@ -23,12 +27,12 @@ namespace MadoriVR.Scripts.FurnitureLayout
             
             mainCamera = GetComponent<Camera>();
             Assert.AreEqual(mainCamera, Camera.main);
-            initialFieldOfView = mainCamera.fieldOfView;
+            mainCameraTransform = mainCamera.transform;
         }
 
         private void Start()
         {
-            eventProvider.OnZoomChange
+            eventProvider.OnZoomChanged
                 .Subscribe(value =>
                 {
                     var newValue = mainCamera.fieldOfView + value * zoomChangeIntensity;
@@ -39,7 +43,15 @@ namespace MadoriVR.Scripts.FurnitureLayout
             eventProvider.OnCameraParallelDisplacement
                 .Subscribe(value =>
                 {
-                    mainCamera.transform.localPosition += value * parallelMoveIntensity;
+                    mainCameraTransform.localPosition += value * parallelMoveIntensity;
+                })
+                .AddTo(this);
+
+            eventProvider.OnCameraRotationDisplacement
+                .Subscribe(value =>
+                {
+                    value *= rotationIntensity;
+                    mainCameraTransform.localRotation *= Quaternion.Euler(-value.y, value.x, 0);
                 })
                 .AddTo(this);
         }

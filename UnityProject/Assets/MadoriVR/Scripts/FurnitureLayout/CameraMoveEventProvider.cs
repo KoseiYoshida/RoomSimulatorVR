@@ -10,24 +10,28 @@ namespace MadoriVR.Scripts.FurnitureLayout
         private const int MouseRightClickButtonIndex = 1;
         private const int MouseWheelButtonIndex = 2;
         
-        private readonly Subject<float> onZoomChange = new();
+        private readonly Subject<float> onZoomChanged = new();
         /// <summary>
         /// -1.0(zoom down) ~ 1.0(zoom up)
         /// </summary>
-        public IObservable<float> OnZoomChange => onZoomChange;
+        public IObservable<float> OnZoomChanged => onZoomChanged;
     
         private readonly Subject<Vector3> onCameraParallelDisplacement = new();
         public IObservable<Vector3> OnCameraParallelDisplacement => onCameraParallelDisplacement;
         private Vector3? mousePositionCache;
-    
+
+        private readonly Subject<Vector2> onCameraRotationDisplacement = new();
+        public IObservable<Vector2> OnCameraRotationDisplacement => onCameraRotationDisplacement;
+        private Vector2? rotationStartPosition;
+
         private void Start()
         {
-            onZoomChange.AddTo(this);
+            onZoomChanged.AddTo(this);
             Observable.EveryUpdate()
                 .Subscribe(_ =>
                 {
                     // 前方に向かう回転でズームアップにしたいので-1をかけている。
-                    onZoomChange.OnNext(-1 * Input.mouseScrollDelta.y);
+                    onZoomChanged.OnNext(-1 * Input.mouseScrollDelta.y);
                 })
                 .AddTo(this);
 
@@ -48,6 +52,25 @@ namespace MadoriVR.Scripts.FurnitureLayout
                     else
                     {
                         mousePositionCache = null;
+                    }
+                }).AddTo(this);
+
+            onCameraRotationDisplacement.AddTo(this);
+            Observable.EveryUpdate()
+                .Subscribe(_ =>
+                {
+                    if (Input.GetMouseButton(MouseRightClickButtonIndex))
+                    {
+                        if (rotationStartPosition is { } notNullValue)
+                        {
+                            onCameraRotationDisplacement.OnNext((Vector2)Input.mousePosition - notNullValue);
+                        }
+                        
+                        rotationStartPosition = Input.mousePosition;
+                    }
+                    else
+                    {
+                        rotationStartPosition = null;
                     }
                 }).AddTo(this);
         }

@@ -3760,6 +3760,8 @@ MonoBehaviour:
   minFieldOfView: 20
   maxFieldOfView: 100
   zoomChangeIntensity: 1
+  parallelMoveIntensity: 0.1
+  rotationIntensity: 0.1
 --- !u!114 &1747694862
 MonoBehaviour:
   m_ObjectHideFlags: 0
